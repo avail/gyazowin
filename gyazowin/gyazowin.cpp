@@ -792,7 +792,7 @@ BOOL saveId(const WCHAR* str)
 BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 {
 	const TCHAR* UPLOAD_SERVER	= _T("pomf.se");
-	const TCHAR* UPLOAD_PATH = _T("blackniggers/kittens.php");
+	const TCHAR* UPLOAD_PATH = _T("upload.php?output=urls");
 
 	const char*  sBoundary = "----BOUNDARYBOUNDARY----";		// boundary
 	const char   sCrLf[]   = { 0xd, 0xa, 0x0 };					// ���s(CR+LF)g
@@ -820,10 +820,10 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 	buf << "--";
 	buf << sBoundary;
 	buf << sCrLf;
-	buf << "content-disposition: form-data; name=\"imagedata\"; filename=\"gyazo.com\"";
+	buf << "content-disposition: form-data; name=\"files\"; filename=\"gyazo.png\"";
 	buf << sCrLf;
-	//buf << "Content-type: image/png";	// �ꉞ
-	//buf << sCrLf;
+	buf << "Content-type: image/png";	// �ꉞ
+	buf << sCrLf;
 	buf << sCrLf;
 
 	// �{��: PNG �t�@�C����ǂݍ���
