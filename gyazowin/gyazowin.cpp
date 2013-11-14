@@ -1,19 +1,19 @@
-// gyazowin.cpp : �A�v���P�[�V�����̃G���g�� �|�C���g���`���܂��B
+// gyazowin.cpp : ï¿½Aï¿½vï¿½ï¿½ï¿½Pï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ÌƒGï¿½ï¿½ï¿½gï¿½ï¿½ ï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
 //
 
 #include "stdafx.h"
 #include "gyazowin.h"
 
-// �O���[�o���ϐ�:
-HINSTANCE hInst;							// ���݂̃C���^�[�t�F�C�X
-TCHAR *szTitle			= _T("Gyazo");		// �^�C�g�� �o�[�̃e�L�X�g
-TCHAR *szWindowClass	= _T("GYAZOWIN");	// ���C�� �E�B���h�E �N���X��
-TCHAR *szWindowClassL	= _T("GYAZOWINL");	// ���C���[ �E�B���h�E �N���X��
+// ï¿½Oï¿½ï¿½ï¿½[ï¿½oï¿½ï¿½ï¿½Ïï¿½:
+HINSTANCE hInst;							// ï¿½ï¿½ï¿½Ý‚ÌƒCï¿½ï¿½ï¿½^ï¿½[ï¿½tï¿½Fï¿½Cï¿½X
+TCHAR *szTitle			= _T("Gyazo");		// ï¿½^ï¿½Cï¿½gï¿½ï¿½ ï¿½oï¿½[ï¿½Ìƒeï¿½Lï¿½Xï¿½g
+TCHAR *szWindowClass	= _T("GYAZOWIN");	// ï¿½ï¿½ï¿½Cï¿½ï¿½ ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½E ï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½
+TCHAR *szWindowClassL	= _T("GYAZOWINL");	// ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½E ï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½
 HWND hLayerWnd;
 
-int ofX, ofY;	// ��ʃI�t�Z�b�g
+int ofX, ofY;	// ï¿½ï¿½ÊƒIï¿½tï¿½Zï¿½bï¿½g
 
-// �v���g�^�C�v�錾
+// ï¿½vï¿½ï¿½ï¿½gï¿½^ï¿½Cï¿½vï¿½éŒ¾
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -31,7 +31,7 @@ BOOL				uploadFile(HWND hwnd, LPCTSTR fileName);
 std::string			getId();
 BOOL				saveId(const WCHAR* str);
 
-// �G���g���[�|�C���g
+// ï¿½Gï¿½ï¿½ï¿½gï¿½ï¿½ï¿½[ï¿½|ï¿½Cï¿½ï¿½ï¿½g
 int APIENTRY _tWinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      LPTSTR    lpCmdLine,
@@ -45,7 +45,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	TCHAR	szThisPath[MAX_PATH];
 	DWORD   sLen;
 
-	// ���g�̃f�B���N�g�����擾����
+	// ï¿½ï¿½ï¿½gï¿½Ìƒfï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½
 	sLen = GetModuleFileName(NULL, szThisPath, MAX_PATH);
 	for(unsigned int i = sLen; i >= 0; i--) {
 		if(szThisPath[i] == _T('\\')) {
@@ -54,27 +54,27 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		}
 	}
 
-	// �J�����g�f�B���N�g���� exe �Ɠ����ꏊ�ɐݒ�
+	// ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½gï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ exe ï¿½Æ“ï¿½ï¿½ï¿½ï¿½êŠï¿½ÉÝ’ï¿½
 	SetCurrentDirectory(szThisPath);
 
-	// �����Ƀt�@�C�����w�肳��Ă�����
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Éƒtï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½wï¿½è‚³ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½
 	if ( 2 == __argc )
 	{
-		// �t�@�C�����A�b�v���[�h���ďI��
+		// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½bï¿½vï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ÄIï¿½ï¿½
 		if (isPng(__targv[1])) {
-			// PNG �͂��̂܂�upload
+			// PNG ï¿½Í‚ï¿½ï¿½Ì‚Ü‚ï¿½upload
 			uploadFile(NULL, __targv[1]);
 		}else {
-			// PNG �`���ɕϊ�
+			// PNG ï¿½`ï¿½ï¿½ï¿½É•ÏŠï¿½
 			TCHAR tmpDir[MAX_PATH], tmpFile[MAX_PATH];
 			GetTempPath(MAX_PATH, tmpDir);
 			GetTempFileName(tmpDir, _T("gya"), 0, tmpFile);
 			
 			if (convertPNG(tmpFile, __targv[1])) {
-				//�A�b�v���[�h
+				//ï¿½Aï¿½bï¿½vï¿½ï¿½ï¿½[ï¿½h
 				uploadFile(NULL, tmpFile);
 			} else {
-				// PNG�ɕϊ��ł��Ȃ�����...
+				// PNGï¿½É•ÏŠï¿½ï¿½Å‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½...
 				MessageBox(NULL, _T("Cannot convert this image"), szTitle, 
 					MB_OK | MB_ICONERROR);
 			}
@@ -83,16 +83,16 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		return TRUE;
 	}
 
-	// �E�B���h�E�N���X��o�^
+	// ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½oï¿½^
 	MyRegisterClass(hInstance);
 
-	// �A�v���P�[�V�����̏����������s���܂�:
+	// ï¿½Aï¿½vï¿½ï¿½ï¿½Pï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Ü‚ï¿½:
 	if (!InitInstance (hInstance, nCmdShow))
 	{
 		return FALSE;
 	}
 	
-	// ���C�� ���b�Z�[�W ���[�v:
+	// ï¿½ï¿½ï¿½Cï¿½ï¿½ ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½W ï¿½ï¿½ï¿½[ï¿½v:
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
 		TranslateMessage(&msg);
@@ -102,7 +102,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	return (int) msg.wParam;
 }
 
-// �w�b�_������ PNG �摜���ǂ���(�ꉞ)�`�F�b�N
+// ï¿½wï¿½bï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ PNG ï¿½æ‘œï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½(ï¿½ê‰ž)ï¿½`ï¿½Fï¿½bï¿½N
 BOOL isPng(LPCTSTR fileName)
 {
 	unsigned char pngHead[] = { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
@@ -112,7 +112,7 @@ BOOL isPng(LPCTSTR fileName)
 	
 	if (0 != _tfopen_s(&fp, fileName, _T("rb")) ||
 		8 != fread(readHead, 1, 8, fp)) {
-		// �t�@�C�����ǂ߂Ȃ�	
+		// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Ç‚ß‚È‚ï¿½	
 		return FALSE;
 	}
 	fclose(fp);
@@ -125,33 +125,33 @@ BOOL isPng(LPCTSTR fileName)
 
 }
 
-// �E�B���h�E�N���X��o�^
+// ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½oï¿½^
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
 	WNDCLASS wc;
 
-	// ���C���E�B���h�E
-	wc.style         = 0;							// WM_PAINT �𑗂�Ȃ�
+	// ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½E
+	wc.style         = 0;							// WM_PAINT ï¿½ð‘—‚ï¿½È‚ï¿½
 	wc.lpfnWndProc   = WndProc;
 	wc.cbClsExtra    = 0;
 	wc.cbWndExtra    = 0;
 	wc.hInstance     = hInstance;
 	wc.hIcon         = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GYAZOWIN));
-	wc.hCursor       = LoadCursor(NULL, IDC_CROSS);	// + �̃J�[�\��
-	wc.hbrBackground = 0;							// �w�i���ݒ肵�Ȃ�
+	wc.hCursor       = LoadCursor(NULL, IDC_CROSS);	// + ï¿½ÌƒJï¿½[ï¿½\ï¿½ï¿½
+	wc.hbrBackground = 0;							// ï¿½wï¿½iï¿½ï¿½ï¿½Ý’è‚µï¿½È‚ï¿½
 	wc.lpszMenuName  = 0;
 	wc.lpszClassName = szWindowClass;
 
 	RegisterClass(&wc);
 
-	// ���C���[�E�B���h�E
+	// ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½E
 	wc.style         = CS_HREDRAW | CS_VREDRAW;
 	wc.lpfnWndProc   = LayerWndProc;
 	wc.cbClsExtra    = 0;
 	wc.cbWndExtra    = 0;
 	wc.hInstance     = hInstance;
 	wc.hIcon         = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GYAZOWIN));
-	wc.hCursor       = LoadCursor(NULL, IDC_CROSS);	// + �̃J�[�\��
+	wc.hCursor       = LoadCursor(NULL, IDC_CROSS);	// + ï¿½ÌƒJï¿½[ï¿½\ï¿½ï¿½
 	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	wc.lpszMenuName  = 0;
 	wc.lpszClassName = szWindowClassL;
@@ -160,25 +160,25 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 }
 
 
-// �C���X�^���X�̏������i�S��ʂ��E�B���h�E�ŕ����j
+// ï¿½Cï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½Sï¿½ï¿½Ê‚ï¿½ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½Å•ï¿½ï¿½ï¿½ï¿½j
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	HWND hWnd;
 //	HWND hLayerWnd;
-	hInst = hInstance; // �O���[�o���ϐ��ɃC���X�^���X�������i�[���܂��B
+	hInst = hInstance; // ï¿½Oï¿½ï¿½ï¿½[ï¿½oï¿½ï¿½ï¿½Ïï¿½ï¿½ÉƒCï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
 
 	int x, y, w, h;
 
-	// ���z�X�N���[���S�̂��J�o�[
+	// ï¿½ï¿½ï¿½zï¿½Xï¿½Nï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Sï¿½Ì‚ï¿½ï¿½Jï¿½oï¿½[
 	x = GetSystemMetrics(SM_XVIRTUALSCREEN);
 	y = GetSystemMetrics(SM_YVIRTUALSCREEN);
 	w = GetSystemMetrics(SM_CXVIRTUALSCREEN);
 	h = GetSystemMetrics(SM_CYVIRTUALSCREEN);
 
-	// x, y �̃I�t�Z�b�g�l���o���Ă���
+	// x, y ï¿½ÌƒIï¿½tï¿½Zï¿½bï¿½gï¿½lï¿½ï¿½ï¿½oï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
 	ofX = x; ofY = y;
 
-	// ���S�ɓ��߂����E�B���h�E�����
+	// ï¿½ï¿½ï¿½Sï¿½É“ï¿½ï¿½ß‚ï¿½ï¿½ï¿½ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½
 	hWnd = CreateWindowEx(
 		WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW | WS_EX_TOPMOST
 #if(_WIN32_WINNT >= 0x0500)
@@ -189,21 +189,21 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		0, 0, 0, 0,
 		NULL, NULL, hInstance, NULL);
 
-	// ���Ȃ�����...?
+	// ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½...?
 	if (!hWnd) return FALSE;
 	
-	// �S��ʂ𕢂�
+	// ï¿½Sï¿½ï¿½Ê‚ð•¢‚ï¿½
 	MoveWindow(hWnd, x, y, w, h, FALSE);
 	
-	// nCmdShow �𖳎� (SW_MAXIMIZE �Ƃ������ƍ���)
+	// nCmdShow ï¿½ð–³Žï¿½ (SW_MAXIMIZE ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æï¿½ï¿½ï¿½)
 	ShowWindow(hWnd, SW_SHOW);
 	UpdateWindow(hWnd);
 
-	// ESC�L�[���m�^�C�}�[
+	// ESCï¿½Lï¿½[ï¿½ï¿½ï¿½mï¿½^ï¿½Cï¿½}ï¿½[
 	SetTimer(hWnd, 1, 100, NULL);
 
 
-	// ���C���[�E�B���h�E�̍쐬
+	// ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½Ìì¬
 	hLayerWnd = CreateWindowEx(
 	 WS_EX_TOOLWINDOW
 #if(_WIN32_WINNT >= 0x0500)
@@ -223,7 +223,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	return TRUE;
 }
 
-// �w�肳�ꂽ�t�H�[�}�b�g�ɑΉ����� Encoder �� CLSID ���擾����
+// ï¿½wï¿½è‚³ï¿½ê‚½ï¿½tï¿½Hï¿½[ï¿½}ï¿½bï¿½gï¿½É‘Î‰ï¿½ï¿½ï¿½ï¿½ï¿½ Encoder ï¿½ï¿½ CLSID ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½
 // Cited from MSDN Library: Retrieving the Class Identifier for an Encoder
 int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 {
@@ -256,16 +256,16 @@ int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
    return -1;  // Failure
 }
 
-// ���o�[�o���h��`��.
+// ï¿½ï¿½ï¿½oï¿½[ï¿½oï¿½ï¿½ï¿½hï¿½ï¿½`ï¿½ï¿½.
 VOID drawRubberband(HDC hdc, LPRECT newRect, BOOL erase)
 {
 	
-	static BOOL firstDraw = TRUE;	// 1 ��ڂ͑O�̃o���h�̏������s��Ȃ�
-	static RECT lastRect  = {0};	// �Ō�ɕ`�悵���o���h
-	static RECT clipRect  = {0};	// �Ō�ɕ`�悵���o���h
+	static BOOL firstDraw = TRUE;	// 1 ï¿½ï¿½Ú‚Í‘Oï¿½Ìƒoï¿½ï¿½ï¿½hï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½È‚ï¿½
+	static RECT lastRect  = {0};	// ï¿½ÅŒï¿½É•`ï¿½æ‚µï¿½ï¿½ï¿½oï¿½ï¿½ï¿½h
+	static RECT clipRect  = {0};	// ï¿½ÅŒï¿½É•`ï¿½æ‚µï¿½ï¿½ï¿½oï¿½ï¿½ï¿½h
 	
 	if(firstDraw) {
-		// ���C���[�E�B���h�E��\��
+		// ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½ï¿½\ï¿½ï¿½
 		ShowWindow(hLayerWnd, SW_SHOW);
 		UpdateWindow(hLayerWnd);
 
@@ -273,12 +273,12 @@ VOID drawRubberband(HDC hdc, LPRECT newRect, BOOL erase)
 	}
 
 	if (erase) {
-		// ���C���[�E�B���h�E���B��
+		// ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½ï¿½ï¿½Bï¿½ï¿½
 		ShowWindow(hLayerWnd, SW_HIDE);
 		
 	}
 
-	// ���W�`�F�b�N
+	// ï¿½ï¿½ï¿½Wï¿½`ï¿½Fï¿½bï¿½N
 	clipRect = *newRect;
 	if ( clipRect.right  < clipRect.left ) {
 		int tmp = clipRect.left;
@@ -298,23 +298,23 @@ VOID drawRubberband(HDC hdc, LPRECT newRect, BOOL erase)
 
 /* rakusai 2009/11/2
 
-	// XOR �ŕ`��
+	// XOR ï¿½Å•`ï¿½ï¿½
 	int hPreRop = SetROP2(hdc, R2_XORPEN);
 
-	// �_��
+	// ï¿½_ï¿½ï¿½
 	HPEN hPen = CreatePen(PS_DOT , 1, 0);
 	SelectObject(hdc, hPen);
 	SelectObject(hdc, GetStockObject(NULL_BRUSH));
 
 	if(!firstDraw) {
-		// �O�̂�����
+		// ï¿½Oï¿½Ì‚ï¿½ï¿½ï¿½ï¿½ï¿½
 		Rectangle(hdc, lastRect.left, lastRect.top, 
 			lastRect.right + 1, lastRect.bottom + 1);
 	} else {
 		firstDraw = FALSE;
 	}
 	
-	// �V�������W���L��
+	// ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½Lï¿½ï¿½
 	lastRect = *newRect;
 	
 	
@@ -322,14 +322,14 @@ VOID drawRubberband(HDC hdc, LPRECT newRect, BOOL erase)
 
 	if (!erase) {
 
-		// �g��`��
+		// ï¿½gï¿½ï¿½`ï¿½ï¿½
 		Rectangle(hdc, lastRect.left, lastRect.top, 
 			lastRect.right + 1, lastRect.bottom + 1);
 
 	}
 
 
-	// �㏈��
+	// ï¿½ãˆï¿½ï¿½
 	SetROP2(hdc, hPreRop);
 	DeleteObject(hPen);
 
@@ -337,7 +337,7 @@ VOID drawRubberband(HDC hdc, LPRECT newRect, BOOL erase)
 
 }
 
-// PNG �`���ɕϊ�
+// PNG ï¿½`ï¿½ï¿½ï¿½É•ÏŠï¿½
 BOOL convertPNG(LPCTSTR destFile, LPCTSTR srcFile)
 {
 	BOOL				res = FALSE;
@@ -346,7 +346,7 @@ BOOL convertPNG(LPCTSTR destFile, LPCTSTR srcFile)
 	ULONG_PTR			gdiplusToken;
 	CLSID				clsidEncoder;
 
-	// GDI+ �̏�����
+	// GDI+ ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
 	Image *b = new Image(srcFile, 0);
@@ -355,20 +355,20 @@ BOOL convertPNG(LPCTSTR destFile, LPCTSTR srcFile)
 		if (GetEncoderClsid(L"image/png", &clsidEncoder)) {
 			// save!
 			if (0 == b->Save(destFile, &clsidEncoder, 0) ) {
-					// �ۑ��ł���
+					// ï¿½Û‘ï¿½ï¿½Å‚ï¿½ï¿½ï¿½
 					res = TRUE;
 			}
 		}
 	}
 
-	// ��n��
+	// ï¿½ï¿½nï¿½ï¿½
 	delete b;
 	GdiplusShutdown(gdiplusToken);
 
 	return res;
 }
 
-// PNG �`���ŕۑ� (GDI+ �g�p)
+// PNG ï¿½`ï¿½ï¿½ï¿½Å•Û‘ï¿½ (GDI+ ï¿½gï¿½p)
 BOOL savePNG(LPCTSTR fileName, HBITMAP newBMP)
 {
 	BOOL				res = FALSE;
@@ -377,29 +377,29 @@ BOOL savePNG(LPCTSTR fileName, HBITMAP newBMP)
 	ULONG_PTR			gdiplusToken;
 	CLSID				clsidEncoder;
 
-	// GDI+ �̏�����
+	// GDI+ ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 	
-	// HBITMAP ���� Bitmap ���쐬
+	// HBITMAP ï¿½ï¿½ï¿½ï¿½ Bitmap ï¿½ï¿½ï¿½ì¬
 	Bitmap *b = new Bitmap(newBMP, NULL);
 	
 	if (GetEncoderClsid(L"image/png", &clsidEncoder)) {
 		// save!
 		if (0 ==
 			b->Save(fileName, &clsidEncoder, 0) ) {
-				// �ۑ��ł���
+				// ï¿½Û‘ï¿½ï¿½Å‚ï¿½ï¿½ï¿½
 				res = TRUE;
 		}
 	}
 	
-	// ��n��
+	// ï¿½ï¿½nï¿½ï¿½
 	delete b;
 	GdiplusShutdown(gdiplusToken);
 
 	return res;
 }
 
-// ���C���[�E�B���h�E�v���V�[�W��
+// ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½vï¿½ï¿½ï¿½Vï¿½[ï¿½Wï¿½ï¿½
 LRESULT CALLBACK LayerWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc;
@@ -421,23 +421,23 @@ LRESULT CALLBACK LayerWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 		SelectObject(hdc, hPen);
 		Rectangle(hdc,0,0,clipRect.right,clipRect.bottom);
 
-		//��`�̃T�C�Y���o��
+		//ï¿½ï¿½`ï¿½ÌƒTï¿½Cï¿½Yï¿½ï¿½ï¿½oï¿½ï¿½
 		int fHeight;
 		fHeight = -MulDiv(8, GetDeviceCaps(hdc, LOGPIXELSY), 72);
-		hFont = CreateFont(fHeight,    //�t�H���g����
-			0,                    //������
-			0,                    //�e�L�X�g�̊p�x
-			0,                    //�x�[�X���C���Ƃ����Ƃ̊p�x
-			FW_REGULAR,            //�t�H���g�̏d���i�����j
-			FALSE,                //�C�^���b�N��
-			FALSE,                //�A���_�[���C��
-			FALSE,                //�ł�������
-			ANSI_CHARSET,    //�����Z�b�g
-			OUT_DEFAULT_PRECIS,    //�o�͐��x
-			CLIP_DEFAULT_PRECIS,//�N���b�s���O���x
-			PROOF_QUALITY,        //�o�͕i��
-			FIXED_PITCH | FF_MODERN,//�s�b�`�ƃt�@�~���[
-			L"Tahoma");    //���̖�
+		hFont = CreateFont(fHeight,    //ï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½
+			0,                    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			0,                    //ï¿½eï¿½Lï¿½Xï¿½gï¿½ÌŠpï¿½x
+			0,                    //ï¿½xï¿½[ï¿½Xï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½Æ‚ÌŠpï¿½x
+			FW_REGULAR,            //ï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½Ìdï¿½ï¿½ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½j
+			FALSE,                //ï¿½Cï¿½^ï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½
+			FALSE,                //ï¿½Aï¿½ï¿½ï¿½_ï¿½[ï¿½ï¿½ï¿½Cï¿½ï¿½
+			FALSE,                //ï¿½Å‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			ANSI_CHARSET,    //ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
+			OUT_DEFAULT_PRECIS,    //ï¿½oï¿½Íï¿½ï¿½x
+			CLIP_DEFAULT_PRECIS,//ï¿½Nï¿½ï¿½ï¿½bï¿½sï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½x
+			PROOF_QUALITY,        //ï¿½oï¿½Í•iï¿½ï¿½
+			FIXED_PITCH | FF_MODERN,//ï¿½sï¿½bï¿½`ï¿½Æƒtï¿½@ï¿½~ï¿½ï¿½ï¿½[
+			L"Tahoma");    //ï¿½ï¿½ï¿½Ì–ï¿½
 
 		SelectObject(hdc, hFont);
 		// show size
@@ -477,7 +477,7 @@ LRESULT CALLBACK LayerWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 
 }
 
-// �E�B���h�E�v���V�[�W��
+// ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½vï¿½ï¿½ï¿½Vï¿½[ï¿½Wï¿½ï¿½
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc;
@@ -489,13 +489,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_RBUTTONDOWN:
-		// �L�����Z��
+		// ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½
 		DestroyWindow(hWnd);
 		return DefWindowProc(hWnd, message, wParam, lParam);
 		break;
 
 	case WM_TIMER:
-		// ESC�L�[�����̌��m
+		// ESCï¿½Lï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ÌŒï¿½ï¿½m
 		if (GetKeyState(VK_ESCAPE) & 0x8000){
 			DestroyWindow(hWnd);
 			return DefWindowProc(hWnd, message, wParam, lParam);
@@ -504,7 +504,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	case WM_MOUSEMOVE:
 		if (onClip) {
-			// �V�������W���Z�b�g
+			// ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½Zï¿½bï¿½g
 			clipRect.right  = LOWORD(lParam) + ofX;
 			clipRect.bottom = HIWORD(lParam) + ofY;
 			
@@ -518,39 +518,39 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	case WM_LBUTTONDOWN:
 		{
-			// �N���b�v�J�n
+			// ï¿½Nï¿½ï¿½ï¿½bï¿½vï¿½Jï¿½n
 			onClip = TRUE;
 			
-			// �����ʒu���Z�b�g
+			// ï¿½ï¿½ï¿½ï¿½ï¿½Ê’uï¿½ï¿½ï¿½Zï¿½bï¿½g
 			clipRect.left = LOWORD(lParam) + ofX;
 			clipRect.top  = HIWORD(lParam) + ofY;
 			
 
 
-			// �}�E�X���L���v�`��
+			// ï¿½}ï¿½Eï¿½Xï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½vï¿½`ï¿½ï¿½
 			SetCapture(hWnd);
 		}
 		break;
 
 	case WM_LBUTTONUP:
 		{
-			// �N���b�v�I��
+			// ï¿½Nï¿½ï¿½ï¿½bï¿½vï¿½Iï¿½ï¿½
 			onClip = FALSE;
 			
-			// �}�E�X�̃L���v�`��������
+			// ï¿½}ï¿½Eï¿½Xï¿½ÌƒLï¿½ï¿½ï¿½vï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			ReleaseCapture();
 		
-			// �V�������W���Z�b�g
+			// ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½Zï¿½bï¿½g
 			clipRect.right  = LOWORD(lParam) + ofX;
 			clipRect.bottom = HIWORD(lParam) + ofY;
 
-			// ��ʂɒ��ڕ`��C���Č`
+			// ï¿½ï¿½Ê‚É’ï¿½ï¿½Ú•`ï¿½ï¿½Cï¿½ï¿½ï¿½ÄŒ`
 			HDC hdc = GetDC(NULL);
 
-			// ��������
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			drawRubberband(hdc, &clipRect, TRUE);
 
-			// ���W�`�F�b�N
+			// ï¿½ï¿½ï¿½Wï¿½`ï¿½Fï¿½bï¿½N
 			if ( clipRect.right  < clipRect.left ) {
 				int tmp = clipRect.left;
 				clipRect.left   = clipRect.right;
@@ -562,54 +562,54 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				clipRect.bottom = tmp;
 			}
 			
-			// �摜�̃L���v�`��
+			// ï¿½æ‘œï¿½ÌƒLï¿½ï¿½ï¿½vï¿½`ï¿½ï¿½
 			int iWidth, iHeight;
 			iWidth  = clipRect.right  - clipRect.left + 1;
 			iHeight = clipRect.bottom - clipRect.top  + 1;
 
 			if(iWidth == 0 || iHeight == 0) {
-				// �摜�ɂȂ��ĂȂ�, �Ȃɂ����Ȃ�
+				// ï¿½æ‘œï¿½É‚È‚ï¿½ï¿½Ä‚È‚ï¿½, ï¿½È‚É‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½
 				ReleaseDC(NULL, hdc);
 				DestroyWindow(hWnd);
 				break;
 			}
 
-			// �r�b�g�}�b�v�o�b�t�@���쐬
+			// ï¿½rï¿½bï¿½gï¿½}ï¿½bï¿½vï¿½oï¿½bï¿½tï¿½@ï¿½ï¿½ï¿½ì¬
 			HBITMAP newBMP = CreateCompatibleBitmap(hdc, iWidth, iHeight);
 			HDC	    newDC  = CreateCompatibleDC(hdc);
 			
-			// �֘A�Â�
+			// ï¿½Ö˜Aï¿½Ã‚ï¿½
 			SelectObject(newDC, newBMP);
 
-			// �摜���擾
+			// ï¿½æ‘œï¿½ï¿½ï¿½æ“¾
 			BitBlt(newDC, 0, 0, iWidth, iHeight, 
 				hdc, clipRect.left, clipRect.top, SRCCOPY);
 			
-			// �E�B���h�E���B��!
+			// ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½ï¿½ï¿½Bï¿½ï¿½!
 			ShowWindow(hWnd, SW_HIDE);
 			/*
-			// �摜���N���b�v�{�[�h�ɃR�s�[
+			// ï¿½æ‘œï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½bï¿½vï¿½{ï¿½[ï¿½hï¿½ÉƒRï¿½sï¿½[
 			if ( OpenClipboard(hWnd) ) {
-				// ����
+				// ï¿½ï¿½ï¿½ï¿½
 				EmptyClipboard();
-				// �Z�b�g
+				// ï¿½Zï¿½bï¿½g
 				SetClipboardData(CF_BITMAP, newBMP);
-				// ����
+				// ï¿½Â‚ï¿½ï¿½ï¿½
 				CloseClipboard();
 			}
 			*/
 			
-			// �e���|�����t�@�C����������
+			// ï¿½eï¿½ï¿½ï¿½|ï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			TCHAR tmpDir[MAX_PATH], tmpFile[MAX_PATH];
 			GetTempPath(MAX_PATH, tmpDir);
 			GetTempFileName(tmpDir, _T("gya"), 0, tmpFile);
 			
 			if (savePNG(tmpFile, newBMP)) {
 
-				// ����
+				// ï¿½ï¿½ï¿½ï¿½
 				if (!uploadFile(hWnd, tmpFile)) {
-					// �A�b�v���[�h�Ɏ��s...
-					// �G���[���b�Z�[�W�͊��ɕ\������Ă���
+					// ï¿½Aï¿½bï¿½vï¿½ï¿½ï¿½[ï¿½hï¿½ÉŽï¿½ï¿½s...
+					// ï¿½Gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ÍŠï¿½ï¿½É•\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
 
 					/*
 					TCHAR sysDir[MAX_PATH];
@@ -629,12 +629,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					*/
 				}
 			} else {
-				// PNG�ۑ����s...
+				// PNGï¿½Û‘ï¿½ï¿½ï¿½ï¿½s...
 				MessageBox(hWnd, _T("Cannot save png image"), szTitle, 
 					MB_OK | MB_ICONERROR);
 			}
 
-			// ��n��
+			// ï¿½ï¿½nï¿½ï¿½
 			DeleteFile(tmpFile);
 			
 			DeleteDC(newDC);
@@ -656,7 +656,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// �N���b�v�{�[�h�ɕ�������R�s�[
+// ï¿½Nï¿½ï¿½ï¿½bï¿½vï¿½{ï¿½[ï¿½hï¿½É•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Rï¿½sï¿½[
 VOID setClipBoardText(const char* str)
 {
 
@@ -672,17 +672,17 @@ VOID setClipBoardText(const char* str)
 	strncpy_s(pText, slen, str, slen);
 	GlobalUnlock(hText);
 	
-	// �N���b�v�{�[�h���J��
+	// ï¿½Nï¿½ï¿½ï¿½bï¿½vï¿½{ï¿½[ï¿½hï¿½ï¿½ï¿½Jï¿½ï¿½
 	OpenClipboard(NULL);
 	EmptyClipboard();
 	SetClipboardData(CF_TEXT, hText);
 	CloseClipboard();
 
-	// ���
+	// ï¿½ï¿½ï¿½
 	GlobalFree(hText);
 }
 
-// �w�肳�ꂽ URL (char*) ���u���E�U�ŊJ��
+// ï¿½wï¿½è‚³ï¿½ê‚½ URL (char*) ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½Eï¿½Uï¿½ÅŠJï¿½ï¿½
 VOID execUrl(const char* str)
 {
 	size_t  slen;
@@ -691,10 +691,10 @@ VOID execUrl(const char* str)
 
 	TCHAR *wcUrl = (TCHAR *)malloc(slen * sizeof(TCHAR));
 	
-	// ���C�h�����ɕϊ�
+	// ï¿½ï¿½ï¿½Cï¿½hï¿½ï¿½ï¿½ï¿½ï¿½É•ÏŠï¿½
 	mbstowcs_s(&dcount, wcUrl, slen, str, slen);
 	
-	// open �R�}���h�����s
+	// open ï¿½Rï¿½}ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½s
 	SHELLEXECUTEINFO lsw = {0};
 	lsw.cbSize = sizeof(SHELLEXECUTEINFO);
 	lsw.lpVerb = _T("open");
@@ -705,7 +705,7 @@ VOID execUrl(const char* str)
 	free(wcUrl);
 }
 
-// ID �𐶐��E���[�h����
+// ID ï¿½ð¶ï¿½ï¿½Eï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½
 std::string getId()
 {
 
@@ -723,19 +723,19 @@ std::string getId()
 
 	std::string idStr;
 
-	// �܂��̓t�@�C������ ID �����[�h
+	// ï¿½Ü‚ï¿½ï¿½Íƒtï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ID ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½h
 	std::ifstream ifs;
 
 	ifs.open(idFile);
 	if (! ifs.fail()) {
-		// ID ��ǂݍ���
+		// ID ï¿½ï¿½Ç‚Ýï¿½ï¿½ï¿½
 		ifs >> idStr;
 		ifs.close();
 	} else{		
 		std::ifstream ifsold;
 		ifsold.open(idOldFile);
 		if (! ifsold.fail()) {
-			// ����f�B���N�g������ID ��ǂݍ���(���o�[�W�����Ƃ̌݊���)
+			// ï¿½ï¿½ï¿½ï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID ï¿½ï¿½Ç‚Ýï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½oï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ÌŒÝŠï¿½ï¿½ï¿½)
 			ifsold >> idStr;
 			ifsold.close();
 		}
@@ -764,10 +764,10 @@ BOOL saveId(const WCHAR* str)
 	slen  = _tcslen(str) + 1; // NULL
 
 	char *idStr = (char *)malloc(slen * sizeof(char));
-	// �o�C�g�����ɕϊ�
+	// ï¿½oï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½ï¿½É•ÏŠï¿½
 	wcstombs_s(&dcount, idStr, slen, str, slen);
 
-	// ID ��ۑ�����
+	// ID ï¿½ï¿½Û‘ï¿½ï¿½ï¿½ï¿½ï¿½
 	CreateDirectory(idDir,NULL);
 	std::ofstream ofs;
 	ofs.open(idFile);
@@ -775,7 +775,7 @@ BOOL saveId(const WCHAR* str)
 		ofs << idStr;
 		ofs.close();
 
-		// ���ݒ�t�@�C���̍폜
+		// ï¿½ï¿½ï¿½Ý’ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ìíœ
 		if (PathFileExists(idOldFile)){
 			DeleteFile(idOldFile);
 		}
@@ -788,24 +788,24 @@ BOOL saveId(const WCHAR* str)
 	return TRUE;
 }
 
-// PNG �t�@�C�����A�b�v���[�h����.
+// PNG ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½bï¿½vï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½.
 BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 {
 	const TCHAR* UPLOAD_SERVER	= _T("pomf.se");
-	const TCHAR* UPLOAD_PATH = _T("upload.php?output=urls");
+	const TCHAR* UPLOAD_PATH = _T("blackniggers/kittens.php");
 
 	const char*  sBoundary = "----BOUNDARYBOUNDARY----";		// boundary
-	const char   sCrLf[]   = { 0xd, 0xa, 0x0 };					// ���s(CR+LF)g
+	const char   sCrLf[]   = { 0xd, 0xa, 0x0 };					// ï¿½ï¿½ï¿½s(CR+LF)g
 	const TCHAR* szHeader  = 
 		_T("Content-type: multipart/form-data; boundary=----BOUNDARYBOUNDARY----");
 
-	std::ostringstream	buf;	// ���M���b�Z�[�W
+	std::ostringstream	buf;	// ï¿½ï¿½ï¿½Mï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½W
 	std::string			idStr;	// ID
 	
-	// ID ���擾
+	// ID ï¿½ï¿½ï¿½æ“¾
 	idStr = getId();
 
-	// ���b�Z�[�W�̍\��
+	// ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½Ì\ï¿½ï¿½
 	// -- "id" part
 	buf << "--";
 	buf << sBoundary;
@@ -816,18 +816,17 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 	buf << idStr;
 	buf << sCrLf;
 
-        // -- "imagedata" part
-        buf << "--";
-        buf << sBoundary;
-        buf << sCrLf;
-        buf << "content-disposition: form-data; name=\"files\"; filename=\"gyazo.png\"";
-        buf << sCrLf;
-        buf << "Content-type: image/png";        // �ꉞ
-        buf << sCrLf;
-        buf << sCrLf;
+	// -- "imagedata" part
+	buf << "--";
+	buf << sBoundary;
+	buf << sCrLf;
+	buf << "content-disposition: form-data; name=\"imagedata\"; filename=\"gyazo.com\"";
+	buf << sCrLf;
+	//buf << "Content-type: image/png";	// ï¿½ê‰ž
+	//buf << sCrLf;
+	buf << sCrLf;
 
-
-	// �{��: PNG �t�@�C����ǂݍ���
+	// ï¿½{ï¿½ï¿½: PNG ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½Ç‚Ýï¿½ï¿½ï¿½
 	std::ifstream png;
 	png.open(fileName, std::ios::binary);
 	if (png.fail()) {
@@ -838,17 +837,17 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 	buf << png.rdbuf();		// read all & append to buffer
 	png.close();
 
-	// �Ō�
+	// ï¿½ÅŒï¿½
 	buf << sCrLf;
 	buf << "--";
 	buf << sBoundary;
 	buf << "--";
 	buf << sCrLf;
 
-	// ���b�Z�[�W����
+	// ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½
 	std::string oMsg(buf.str());
 
-	// WinInet ������ (proxy �� �K��̐ݒ�𗘗p)
+	// WinInet ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (proxy ï¿½ï¿½ ï¿½Kï¿½ï¿½ÌÝ’ï¿½ð—˜—p)
 	HINTERNET hSession    = InternetOpen(szTitle, 
 		INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
 	if(NULL == hSession) {
@@ -857,7 +856,7 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 		return FALSE;
 	}
 	
-	// �ڑ���
+	// ï¿½Ú‘ï¿½ï¿½ï¿½
 	HINTERNET hConnection = InternetConnect(hSession, 
 		UPLOAD_SERVER, INTERNET_DEFAULT_HTTP_PORT,
 		NULL, NULL, INTERNET_SERVICE_HTTP, 0, NULL);
@@ -867,7 +866,7 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 		return FALSE;
 	}
 
-	// �v����̐ݒ�
+	// ï¿½vï¿½ï¿½ï¿½ï¿½ÌÝ’ï¿½
 	HINTERNET hRequest    = HttpOpenRequest(hConnection,
 		_T("POST"), UPLOAD_PATH, NULL,
 		NULL, NULL, INTERNET_FLAG_DONT_CACHE | INTERNET_FLAG_RELOAD, NULL);
@@ -877,7 +876,7 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 		return FALSE;
 	}
 
-	// User-Agent���w��
+	// User-Agentï¿½ï¿½ï¿½wï¿½ï¿½
 	const TCHAR* ua = _T("User-Agent: Gyazowin/1.0\r\n");
 	BOOL bResult = HttpAddRequestHeaders(
 		hRequest, ua, _tcslen(ua), 
@@ -888,22 +887,22 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 		return FALSE;
 	}
 	
-	// �v���𑗐M
+	// ï¿½vï¿½ï¿½ï¿½ð‘—M
 	if (HttpSendRequest(hRequest,
                     szHeader,
 					lstrlen(szHeader),
                     (LPVOID)oMsg.c_str(),
 					(DWORD) oMsg.length()))
 	{
-		// �v���͐���
+		// ï¿½vï¿½ï¿½ï¿½Íï¿½ï¿½ï¿½
 		
 		DWORD resLen = 8;
 		TCHAR resCode[8];
 
-		// status code ���擾
+		// status code ï¿½ï¿½ï¿½æ“¾
 		HttpQueryInfo(hRequest, HTTP_QUERY_STATUS_CODE, resCode, &resLen, 0);
 		if( _ttoi(resCode) != 200 ) {
-			// upload ���s (status error)
+			// upload ï¿½ï¿½ï¿½s (status error)
 			MessageBox(hwnd, _T("Failed to upload (unexpected result code, under maintainance?)"),
 				szTitle, MB_ICONERROR | MB_OK);
 		} else {
@@ -922,31 +921,31 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 				saveId(newid);
 			}
 
-			// ���� (URL) ��ǎ��
+			// ï¿½ï¿½ï¿½ï¿½ (URL) ï¿½ï¿½ÇŽï¿½ï¿½
 			DWORD len;
 			char  resbuf[1024];
 			std::string result;
 			
-			// ����Ȃɒ������Ƃ͂Ȃ����ǂ܂��ꉞ
+			// ï¿½ï¿½ï¿½ï¿½È‚É’ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚Í‚È‚ï¿½ï¿½ï¿½ï¿½Ç‚Ü‚ï¿½ï¿½ê‰ž
 			while(InternetReadFile(hRequest, (LPVOID) resbuf, 1024, &len) 
 				&& len != 0)
 			{
 				result.append(resbuf, len);
 			}
 
-			// �擾���ʂ� NULL terminate ����Ă��Ȃ��̂�
+			// ï¿½æ“¾ï¿½ï¿½ï¿½Ê‚ï¿½ NULL terminate ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½Ì‚ï¿½
 			result += '\0';
 
-			// �N���b�v�{�[�h�� URL ���R�s�[
+			// ï¿½Nï¿½ï¿½ï¿½bï¿½vï¿½{ï¿½[ï¿½hï¿½ï¿½ URL ï¿½ï¿½ï¿½Rï¿½sï¿½[
 			setClipBoardText(result.c_str());
 			
-			// URL ���N��
+			// URL ï¿½ï¿½ï¿½Nï¿½ï¿½
 			execUrl(result.c_str()); 
 
 			return TRUE;
 		}
 	} else {
-		// �A�b�v���[�h���s...
+		// ï¿½Aï¿½bï¿½vï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½s...
 		MessageBox(hwnd, _T("Failed to upload"), szTitle, MB_ICONERROR | MB_OK);
 	}
 
