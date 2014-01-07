@@ -792,7 +792,7 @@ BOOL saveId(const WCHAR* str)
 BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 {
 	const TCHAR* UPLOAD_SERVER	= _T("pomf.se");
-	const TCHAR* UPLOAD_PATH = _T("upload.php?output=urls");
+	const TCHAR* UPLOAD_PATH = _T("upload.php?output=gyazo");
 
 	const char*  sBoundary = "----BOUNDARYBOUNDARY----";		// boundary
 	const char   sCrLf[]   = { 0xd, 0xa, 0x0 };					// 改行(CR+LF)
