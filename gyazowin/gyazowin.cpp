@@ -820,7 +820,7 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 	buf << "--";
 	buf << sBoundary;
 	buf << sCrLf;
-	buf << "content-disposition: form-data; name=\"files\"; filename=\"gyazo.png\"";
+	buf << "content-disposition: form-data; name=\"files[]\"; filename=\"gyazo.png\"";
 	buf << sCrLf;
 	buf << "Content-type: image/png";	// 一応
 	buf << sCrLf;
