@@ -791,7 +791,7 @@ BOOL saveId(const WCHAR* str)
 // PNG ファイルをアップロードする.
 BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 {
-	const TCHAR* UPLOAD_SERVER	= _T("pomf.se");
+	const TCHAR* UPLOAD_SERVER	= _T("img.loveisover.me");
 	const TCHAR* UPLOAD_PATH = _T("upload.php?output=gyazo");
 
 	const char*  sBoundary = "----BOUNDARYBOUNDARY----";		// boundary
@@ -940,7 +940,10 @@ BOOL uploadFile(HWND hwnd, LPCTSTR fileName)
 			setClipBoardText(result.c_str());
 			
 			// URL を起動
-			execUrl(result.c_str()); 
+			// LOVEISOVER CHANGES
+			// execUrl(result.c_str()); 
+			std::string url = "http://a.loveisover.me/";
+			execUrl((url + result.substr(strlen("POMF_URL"))).c_str()); // remove POMF_URL from result and append domain, loveisover bork
 
 			return TRUE;
 		}
